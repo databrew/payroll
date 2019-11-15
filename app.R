@@ -160,7 +160,7 @@ server <- function(input, output) {
                                 start = start_date_default,
                                 end = end_date_default),
                  sliderInput('wage', 'Hourly wage',
-                             min = 0, max = 100, value = 30, step = NULL)),
+                             min = 0, max = 100, value = 40, step = NULL)),
           column(8,
                  DT::dataTableOutput('main_table_dt'))
         )
