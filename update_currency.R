@@ -2,6 +2,7 @@ library(Quandl)
 library(gsheet)
 library(tidyverse)
 library(yaml)
+library(readr)
 
 # Read in credentials
 creds <- yaml.load_file('credentials.yaml')
@@ -23,3 +24,18 @@ names(currency) <- c('date', 'usd_to_cad')
 currency <- left_join(currency, eur_currency)
 currency <- currency %>% filter(!is.na(usd_to_cad),
                                 !is.na(usd_to_eur))
+# Expand out to sys date if needed
+currency <- left_join(tibble(date = seq(min(currency$date),
+                                        Sys.Date(),
+                                        by = 1)),
+                      currency) 
+currency <- currency %>% arrange(date) %>%
+  tidyr::fill(usd_to_cad, usd_to_eur, .direction = 'down')
+
+# Write a csv
+write_csv(currency, 'currency.csv')
+
+# Push to git
+system('git add currency.csv')
+system("git commit -m 'currency update'")
+system('git push')
