@@ -54,3 +54,16 @@ And then add the following line:
 15 11 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R
 ```
 
+To deploy to a shiny server run something like the following:
+```
+scp -i "/home/joebrew/.ssh/openhdskey.pem" -r /home/joebrew/Documents/payroll ubuntu@bohemia.team:/home/ubuntu/
+
+```
+
+Ssh into the server, then run the following:
+```
+cd /srv/shiny-server
+sudo cp -r /home/ubuntu/payroll/ payroll
+sudo systemctl restart shiny-server
+
+```
