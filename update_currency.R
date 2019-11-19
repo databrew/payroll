@@ -10,19 +10,19 @@ creds <- yaml.load_file('credentials.yaml')
 creds <- tibble(name = names(creds),
                 password = as.character(unlist(creds)))
 
-# Test to see if connceted to internet
-havingIP <- function() {
-  if (.Platform$OS.type == "windows") {
-    ipmessage <- system("ipconfig", intern = TRUE)
-  } else {
-    ipmessage <- system("ifconfig", intern = TRUE)
-  }
-  validIP <- "((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.]){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
-  any(grep(validIP, ipmessage))
-}
-connected <- havingIP()
-
-if(connected){
+# # Test to see if connceted to internet
+# havingIP <- function() {
+#   if (.Platform$OS.type == "windows") {
+#     ipmessage <- system("ipconfig", intern = TRUE)
+#   } else {
+#     ipmessage <- system("ifconfig", intern = TRUE)
+#   }
+#   validIP <- "((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.]){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"
+#   any(grep(validIP, ipmessage))
+# }
+# connected <- havingIP()
+# 
+# if(connected){
   ok <- FALSE
   # Get currency data
   currency <- Quandl("BOE/XUDLCDD", 
@@ -64,4 +64,4 @@ if(connected){
     system("git commit -m 'currency update'")
     system('git push')
   }
-}
+# }
