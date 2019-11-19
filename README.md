@@ -42,7 +42,7 @@ git remote set-url origin git@github.com:databrew/payroll.git
 
 ## Chron script
 
-To set up a chron script to run the currency updater daily at 10:55, we'll open crontab:
+To set up a chron script to run the currency updater daily at 11:15, we'll open crontab:
 
 ```
 crontab -e
@@ -51,6 +51,6 @@ crontab -e
 And then add the following line:
 
 ```
-55 10 * * * Rscript /home/joebrew/Documents/payroll/update_currency.R
+15 11 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R
 ```
 
