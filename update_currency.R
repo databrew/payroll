@@ -3,6 +3,7 @@ library(gsheet)
 library(tidyverse)
 library(yaml)
 library(readr)
+library(beepr)
 
 # Read in credentials
 creds <- yaml.load_file('credentials.yaml')
@@ -63,5 +64,8 @@ creds <- tibble(name = names(creds),
     system('git add currency.csv')
     system("git commit -m 'currency update'")
     system('git push')
+    beep(1)
+  } else {
+    beep(2)
   }
 # }
