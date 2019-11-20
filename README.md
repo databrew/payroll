@@ -55,10 +55,7 @@ And then add the following lines:
 ```
 MAILTO='joebrew@gmail.com'
 HOME=/home/joebrew/
-56 09 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R >> /home/joebrew/Desktop/crontablog 2>&1
-
-
-56 09 * * * cd /home/joebrew/Documents/payroll; ./update_currency.sh >> /home/joebrew/Desktop/crontablog 2>&1
+06 10 * * * cd /home/joebrew/Documents/payroll; ./update_currency.sh >> /home/joebrew/Desktop/crontablog 2>&1
 
 ```
 

@@ -63,7 +63,10 @@ creds <- tibble(name = names(creds),
     # Push to git
     system('git add currency.csv')
     system("git commit -m 'currency update'")
-    system('git push')
+    system(paste0("git push https://'",
+                  creds$github_user,
+                  "':'",
+                  creds$github_pass, "'@github.com/databrew/payroll.git"))
     beep(1)
   } else {
     beep(2)
