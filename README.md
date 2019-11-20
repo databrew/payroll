@@ -48,10 +48,13 @@ To set up a chron script to run the currency updater daily at 11:15, we'll open 
 crontab -e
 ```
 
-And then add the following line:
+And then add the following lines:
 
 ```
-15 11 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R
+MAILTO='joebrew@gmail.com'
+HOME=/home/joebrew/
+56 09 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R >> /home/joebrew/Desktop/crontablog 2>&1
+
 ```
 
 To deploy to a shiny server run something like the following:
