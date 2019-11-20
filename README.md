@@ -21,6 +21,8 @@ quandl_api: 12345
 
 ## SSH key
 
+(This is no longer necessary, since passing github credentials directly on the push)
+
 You'll also need to generate an ssh key pair and associate it with this repo. In order to do so:
 
 ```
