@@ -32,6 +32,8 @@ When prompted, save to the following path:
 /home/<user>/.ssh/payroll
 ```
 
+Important: you must give it a written password too.
+
 On the github page of this repo, go to "Settings" -> "Deploy keys", and then "Add new". Copy and paste the contents of `~/.ssh/payroll.pub` where prompted. Make sure to select "allow write access". Your key is now deployed
 
 Now, make sure to set the remote origin to ssh instead of https:
@@ -54,6 +56,9 @@ And then add the following lines:
 MAILTO='joebrew@gmail.com'
 HOME=/home/joebrew/
 56 09 * * * cd /home/joebrew/Documents/payroll; Rscript update_currency.R >> /home/joebrew/Desktop/crontablog 2>&1
+
+
+56 09 * * * cd /home/joebrew/Documents/payroll; ./update_currency.sh >> /home/joebrew/Desktop/crontablog 2>&1
 
 ```
 
