@@ -4,7 +4,7 @@ library(ggplot2)
 library(tidyverse)
 library(yaml)
 library(gsheet)
-library(Quandl)
+# library(Quandl)
 
 
 # Define how to handle vj, xing
@@ -78,41 +78,43 @@ date_restrict <- function(x, start_date, end_date){
 
 # Deal with currency conversion
 
-# Get currency data
-currency <- read_csv('https://raw.githubusercontent.com/databrew/payroll/master/currency.csv')
-
-# Expand out to sys date if needed
-currency <- left_join(tibble(date = seq(min(currency$date),
-                                            Sys.Date(),
-                                            by = 1)),
-                      currency) 
-currency <- currency %>% arrange(date) %>%
-  tidyr::fill(usd_to_cad, usd_to_eur, .direction = 'down')
-
-# Create usd columns
-expenses <-
-  left_join(expenses, currency,
-            by = 'date') %>%
-  mutate(usd = ifelse(currency == 'CAD',
-                      amount / usd_to_cad,
-                      ifelse(currency == 'EUR',
-                             amount / usd_to_eur,
-                             amount)))
-
-income <- left_join(income, currency,
-                    by = 'date') %>%
-  mutate(usd = ifelse(currency == 'CAD',
-                      amount / usd_to_cad,
-                      ifelse(currency == 'EUR',
-                             amount / usd_to_eur,
-                             amount)))
-payments <- left_join(payments, currency,
-                        by = 'date') %>%
-  mutate(usd = ifelse(currency == 'CAD',
-                      amount / usd_to_cad,
-                      ifelse(currency == 'EUR',
-                             amount / usd_to_eur,
-                             amount)))
+# # Get currency data
+# # Commenting out for now, since we now put conversions directly into 
+# # the accounting spreadsheets
+# currency <- read_csv('https://raw.githubusercontent.com/databrew/payroll/master/currency.csv')
+# 
+# # Expand out to sys date if needed
+# currency <- left_join(tibble(date = seq(min(currency$date),
+#                                             Sys.Date(),
+#                                             by = 1)),
+#                       currency) 
+# currency <- currency %>% arrange(date) %>%
+#   tidyr::fill(usd_to_cad, usd_to_eur, .direction = 'down')
+# 
+# # Create usd columns
+# expenses <-
+#   left_join(expenses, currency,
+#             by = 'date') %>%
+#   mutate(usd = ifelse(currency == 'CAD',
+#                       amount / usd_to_cad,
+#                       ifelse(currency == 'EUR',
+#                              amount / usd_to_eur,
+#                              amount)))
+# 
+# income <- left_join(income, currency,
+#                     by = 'date') %>%
+#   mutate(usd = ifelse(currency == 'CAD',
+#                       amount / usd_to_cad,
+#                       ifelse(currency == 'EUR',
+#                              amount / usd_to_eur,
+#                              amount)))
+# payments <- left_join(payments, currency,
+#                         by = 'date') %>%
+#   mutate(usd = ifelse(currency == 'CAD',
+#                       amount / usd_to_cad,
+#                       ifelse(currency == 'EUR',
+#                              amount / usd_to_eur,
+#                              amount)))
 
 # NA to 0
 na_to_zero <- function(x){
