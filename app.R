@@ -1,5 +1,11 @@
 library(shiny)
 library(shinydashboard)
+library(shiny)
+library(shinydashboard)
+library(ggplot2)
+library(tidyverse)
+library(yaml)
+library(gsheet)
 
 source('global.R')
 
@@ -52,6 +58,31 @@ ui <- dashboardPage(header, sidebar, body, skin="blue")
 
 # Server
 server <- function(input, output) {
+  
+  
+  # Read in google data
+  hours <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=335157130')
+  income <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=684913063')
+  payments <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=1319225983')
+  expenses <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=0')
+  
+  # Date format
+  hours$date <- as.Date(hours$date, format = '%m/%d/%Y')
+  expenses$date <- as.Date(expenses$date, format = '%m/%d/%Y')
+  income$date <- as.Date(income$date, format = '%m/%d/%Y')
+  payments$date <- as.Date(payments$date, format = '%m/%d/%Y')
+  # Make all data frames
+  expenses <- data.frame(expenses)
+  hours <- data.frame(hours)
+  income <- data.frame(income)
+  payments <- data.frame(payments)
+  # Name transform
+  expenses <- people_transform(expenses)
+  hours <- people_transform(hours)
+  income <- people_transform(income)
+  payments <- people_transform(payments)
+  
+
   
   # Reactive values
   logged_in <- reactiveVal(value = FALSE)
@@ -111,16 +142,21 @@ server <- function(input, output) {
     # Restrict dates
     sub_hours <- hours %>% date_restrict(start_date = input$date_range[1],
                                          end_date = input$date_range[2])
+    date_range <- input$date_range
+    # save(sub_hours, date_range, file = 'temp.RData')
     sub_expenses <- expenses %>% date_restrict(start_date = input$date_range[1],
                                          end_date = input$date_range[2])
     # Define all people
     left <- tibble(name = sort(unique(c(hours$name, expenses$name))))
     
+    # Define wage
+    wagey <- input$wage
+    
     # Get summary table of hours
     right <- sub_hours %>%
       group_by(name) %>%
       summarise(hours = sum(hours, na.rm = TRUE)) %>%
-      mutate(wages_owed = hours * input$wage)
+      mutate(wages_owed = hours * wagey)
     
     # Get summary table of expenses
     right2 <- sub_expenses %>%

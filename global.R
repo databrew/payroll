@@ -49,27 +49,6 @@ check_password <- function(user, password){
   return(list(ok, msg))
 }
 
-# Read in google data
-hours <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=335157130')
-income <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=684913063')
-payments <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=1319225983')
-expenses <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1dLjT7ODp9LmyAd4pZ_QNnpeP5LtNvfvk-PyGnA32YO4/edit#gid=0')
-
-# Date format
-hours$date <- as.Date(hours$date, format = '%m/%d/%Y')
-expenses$date <- as.Date(expenses$date, format = '%m/%d/%Y')
-income$date <- as.Date(income$date, format = '%m/%d/%Y')
-payments$date <- as.Date(payments$date, format = '%m/%d/%Y')
-# Make all data frames
-expenses <- data.frame(expenses)
-hours <- data.frame(hours)
-income <- data.frame(income)
-payments <- data.frame(payments)
-# Name transform
-expenses <- people_transform(expenses)
-hours <- people_transform(hours)
-income <- people_transform(income)
-payments <- people_transform(payments)
 
 # Filter dates function
 date_restrict <- function(x, start_date, end_date){
